@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.datasets import load_diabetes
-from pyStepWise import stepwiseregression as SWR
+from stepwiseregression import stepwiseregression as SWR
 
 X, Y = load_diabetes(as_frame=True, return_X_y=True)
 Y = pd.DataFrame(Y)

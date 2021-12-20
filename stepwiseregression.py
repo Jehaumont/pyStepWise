@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor as VIF
 import time
 from pprint import pprint
 
@@ -55,6 +56,29 @@ class stepwiseregression:
             if removed_param is None and inserted_param is None:
                 break
             print()
+
+        # detect multicollinearty
+        VIF_values = []
+        for i, __ in enumerate(self.model_parameters):
+            if i == 0:
+                continue
+            tmp_VIF_value = VIF(self.X[self.model_parameters].values, i)
+            VIF_values.append(tmp_VIF_value)
+
+        while any([val > 10 for val in VIF_values]):
+            idx_max_VIF = np.argmax(VIF_values)
+            param_max_vif = self.model_parameters[idx_max_VIF + 1]
+            self.model_parameters.remove(param_max_vif)
+
+            VIF_values = []
+            for i, __ in enumerate(self.model_parameters):
+                if i == 0:
+                    continue
+                tmp_VIF_value = VIF(self.X[self.model_parameters].values, i)
+                VIF_values.append(tmp_VIF_value)
+
+        updated_model = self.__fit(self.X[self.model_parameters], self.Y)
+        self.model = updated_model
 
         self.step_history = pd.DataFrame(self.step_history)
         if self.trace:
