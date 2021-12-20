@@ -24,4 +24,3 @@ print(swr.model.summary())
 swr = SWR("mixed", "pval", threshold=0.05)
 swr.fit(X, Y)
 print(swr.model.summary())
-

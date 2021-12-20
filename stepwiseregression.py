@@ -61,6 +61,17 @@ class stepwiseregression:
             pprint(self.step_history)
             pprint(self.model_parameters)
 
+    def predict(self, X):
+
+        if isinstance(X, np.ndarray):
+            X = pd.DataFrame(data=X, columns=self.all_params)
+
+        if "Intercept" not in X:
+            X["Intercept"] = 1
+
+        y_pred = self.model.predict(X[self.model_parameters])
+        return y_pred
+
     def __init_model(self):
 
         # add an intercept to the data
