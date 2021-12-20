@@ -70,7 +70,7 @@ class stepwiseregression:
             X["Intercept"] = 1
 
         y_pred = self.model.predict(X[self.model_parameters])
-        return y_pred
+        return y_pred.values
 
     def __init_model(self):
 

@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.datasets import load_diabetes
-from stepwiseregression import stepwiseregression as SWR
+from pyStepWise import stepwiseregression as SWR
 
 X, Y = load_diabetes(as_frame=True, return_X_y=True)
 Y = pd.DataFrame(Y)
@@ -24,3 +24,8 @@ print(swr.model.summary())
 swr = SWR("mixed", "pval", threshold=0.05)
 swr.fit(X, Y)
 print(swr.model.summary())
+
+swr = SWR("mixed", "pval", threshold=0.1)
+swr.fit(X.values, Y.values)
+print(swr.model.summary())
+y_pred = swr.predict(X.values)
