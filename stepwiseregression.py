@@ -37,7 +37,6 @@ class stepwiseregression:
                                  'F-stat': round(self.model.fvalue, 3)}
 
                     self.step_history.append(step_info)
-                    print(self.model_parameters)
             if self.direction in ["backward", "mixed"]:
                 removed_param = self.__backward_step()
                 if removed_param is not None:
@@ -50,30 +49,24 @@ class stepwiseregression:
                                  'F-stat': round(self.model.fvalue, 3)}
 
                     self.step_history.append(step_info)
-                    print(self.model_parameters)
 
             # model could not be further imporoved by removing or inserting parameter
             if removed_param is None and inserted_param is None:
                 break
-            print()
 
         # detect multicollinearty
         VIF_values = []
         for i, __ in enumerate(self.model_parameters):
-            if i == 0:
-                continue
             tmp_VIF_value = VIF(self.X[self.model_parameters].values, i)
             VIF_values.append(tmp_VIF_value)
 
         while any([val > 10 for val in VIF_values]):
             idx_max_VIF = np.argmax(VIF_values)
-            param_max_vif = self.model_parameters[idx_max_VIF + 1]
+            param_max_vif = self.model_parameters[idx_max_VIF]
             self.model_parameters.remove(param_max_vif)
 
             VIF_values = []
             for i, __ in enumerate(self.model_parameters):
-                if i == 0:
-                    continue
                 tmp_VIF_value = VIF(self.X[self.model_parameters].values, i)
                 VIF_values.append(tmp_VIF_value)
 
